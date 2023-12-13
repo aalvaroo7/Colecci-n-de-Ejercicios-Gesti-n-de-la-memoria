@@ -39,3 +39,22 @@ int main() {
 
         // Salir con éxito
         exit(EXIT_SUCCESS);
+    } else {
+        // Código ejecutado por el proceso padre
+
+        // Escribir en la memoria compartida desde el padre
+        strcpy(shared_memory, "Hello, child process!");
+
+        // Esperar a que el proceso hijo termine
+        wait(NULL);
+
+        // Liberar la memoria compartida utilizada por el padre
+        if (munmap(shared_memory, SIZE) == -1) {
+            perror("munmap");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Terminar el programa con éxito
+    return 0;
+}
