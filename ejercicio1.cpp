@@ -17,20 +17,14 @@ int main() {
         perror("mmap");
         exit(EXIT_FAILURE);
     }
+    // Crear un nuevo proceso
     pid_t pid = fork();
 
+    // Verificar errores en la creación del proceso
     if (pid < 0) {
         perror("fork");
+        // Liberar la memoria compartida antes de salir en caso de error
+        munmap(shared_memory, SIZE);
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
-        printf("Child reads: %s\n", shared_memory);
-        munmap(shared_memory, SIZE);
-        exit(EXIT_SUCCESS);
-    } else {
-        strcpy(shared_memory, "Hello, child process!");
-        wait(NULL);
-        munmap(shared_memory, SIZE);
-    }
-
-    return 0;
-}
+        // Código ejecutado por el proceso hijo
