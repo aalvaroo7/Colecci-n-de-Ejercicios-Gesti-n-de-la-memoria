@@ -28,3 +28,14 @@ int main() {
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
         // Código ejecutado por el proceso hijo
+        // Imprimir el contenido de la memoria compartida
+        printf("Child reads: %s\n", shared_memory);
+
+        // Liberar la memoria compartida utilizada por el hijo
+        if (munmap(shared_memory, SIZE) == -1) {
+            perror("munmap");
+            exit(EXIT_FAILURE);
+        }
+
+        // Salir con éxito
+        exit(EXIT_SUCCESS);
